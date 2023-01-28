@@ -14,6 +14,9 @@ This is a web-based survey application built using Express.js and Node.js. The a
 - Run with docker by `docker-compose up --build` command
 - The application will be running on http://localhost:3001
 - You can view docs in http://localhost:3001/docs for usage of endpoints.
+- Register and Login for Admin and User roles,
+- Create Form, Question, Option and Survey as Admin role.
+- Submit Survey as User.
 ## Built With
 - Express.js
 - Node.js
