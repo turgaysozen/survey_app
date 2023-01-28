@@ -95,12 +95,69 @@ test('Submit survey with authentication', async t => {
 });
 
 test('Get a single survey', async (t) => {
-    const surveyId = 1;
+    const email = random.email();
+    const password = random.string();
+
+    const form = await prisma.form.create({ data: { label: 'Test Form' } });
+    const question = await prisma.question.create({
+        data: {
+            label: "label",
+            required: true,
+            form: {
+                connect: {
+                    id: form.id
+                }
+            }
+        }
+    })
+    const user = await prisma.user.create({
+        data: {
+            firstName: 'Admin',
+            lastName: 'admin',
+            email: email,
+            role: 'Admin',
+            password: password
+        }
+    });
+    const resp = [
+        {
+            "answer": "Answer 1"
+        },
+        {
+            "answer": "Answer 2"
+        }
+    ]
+
+    const survey = await prisma.survey.create({
+        data: {
+            form: {
+                connect: {
+                    id: form.id
+                }
+            },
+            user: {
+                connect: {
+                    id: user.id
+                }
+            },
+            responses: {
+                create: resp.map(response => ({
+                    answer: response.answer,
+                    question: {
+                        connect: {
+                            id: question.id
+                        }
+                    }
+                }))
+            }
+        }
+    })
+
     const res = await request(app)
-        .get(`/api/survey/${surveyId}`)
+        .get(`/api/survey/${survey.id}`)
         .set('Cookie', "token=" + adminToken)
     t.is(res.status, 200);
-    t.is(res.body.id, surveyId, 'Id should match');
+    t.is(res.body.id, survey.id, 'Id should match');
 });
 
 test('Get all surveys', async (t) => {
