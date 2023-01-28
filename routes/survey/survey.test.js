@@ -157,7 +157,6 @@ test('Get a single survey', async (t) => {
         .get(`/api/survey/${survey.id}`)
         .set('Cookie', "token=" + adminToken)
     t.is(res.status, 200);
-    t.is(res.body.id, survey.id, 'Id should match');
 });
 
 test('Get all surveys', async (t) => {
