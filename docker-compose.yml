@@ -1,0 +1,41 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: survey_app
+    networks:
+      - postgres
+  survey_app_api:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    volumes:
+      - /app/node_modules
+      - ./:/app
+    ports: 
+      - "3001:3001"
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    networks:
+      - postgres
+    environment:
+      - "JWT_SECRET:my_secret"
+      - "PORT:3001"
+  migrate_db:
+    build: .
+    command: npx prisma migrate dev
+    environment:
+      - "DATABASE_URL:postgresql://postgres:password@postgres:5432/survey_app"
+    depends_on:
+      - postgres
+      - survey_app_api
+    networks:
+      - postgres
+networks:
+  postgres:
+    driver: bridge
