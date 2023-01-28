@@ -178,6 +178,28 @@ test('Delete an option by ID', async t => {
 });
 
 test('View all options', async t => {
+    const form = await prisma.form.create({ data: { label: 'Test Form' } });
+    const question = await prisma.question.create(
+        {
+            data: {
+                label: 'Test Question',
+                required: true,
+                formId: form.id
+            }
+        }
+    );
+
+    await prisma.option.create({
+        data: {
+            label: "Option 1",
+            question: {
+                connect: {
+                    id: question.id
+                }
+            }
+        }
+    });
+
     const res = await request(app)
         .get('/api/option/view')
         .set('Cookie', "token=" + token)
