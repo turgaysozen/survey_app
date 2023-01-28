@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -17,6 +18,8 @@ app.use(cors());
 
 app.use(cookieParser());
 app.use(express.json())
+
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
 // public auth routes
 const mainRoute = require('./routes/main/main')

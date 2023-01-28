@@ -1,3 +1,14 @@
+/**
+ * @function POST /api/auth/login
+ * @description Endpoint for logging in a user.
+ * @property {String} email - Email of the user trying to login
+ * @property {String} password - Password of the user trying to login
+ * @returns {Object} JSON object containing a message and a token
+ * @throws {400} - If email or password is invalid
+ * @throws {500} - If there is an error while logging in
+ * @access Public
+ */
+
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');

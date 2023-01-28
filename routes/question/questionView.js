@@ -1,7 +1,15 @@
 const router = require('express').Router()
-
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
+
+/**
+ * @function GET /api/question/view
+ * @description Get all questions
+ * @returns {object} questions - List of all questions
+ * @returns {string} message - Success message
+ * @throws {Error} error - An error occurred while getting questions
+ * @roles User - Only User role can view this page
+ */
 
 router.get('', async (req, res) => {
     try {

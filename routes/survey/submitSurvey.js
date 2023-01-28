@@ -2,6 +2,16 @@ const router = require('express').Router();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+/**
+@function POST /api/survey/submit/:formId
+@desc Submit a survey by form ID
+@param {Number} formId - The ID of the form that the survey is being submitted for
+@property {Number} userId - The ID of the user who is submitting the survey
+@property {Object} responses - Responses for submitting the survey
+answer: {string} the answer to the question
+questionId: {Number} the ID of the question that the answer corresponds to
+*/
+
 // Submit a survey by form ID
 router.post('/:formId', async (req, res) => {
     const { formId } = req.params;
