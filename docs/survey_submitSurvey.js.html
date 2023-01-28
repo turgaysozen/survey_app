@@ -35,7 +35,7 @@ const prisma = new PrismaClient();
 @desc Submit a survey by form ID
 @param {Number} formId - The ID of the form that the survey is being submitted for
 @property {Number} userId - The ID of the user who is submitting the survey
-@property {Object} responses - Responses for submitting the survey
+@property {Object[]} responses - Responses for submitting the survey
 answer: {string} the answer to the question
 questionId: {Number} the ID of the question that the answer corresponds to
 */
