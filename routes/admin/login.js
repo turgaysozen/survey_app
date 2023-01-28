@@ -12,7 +12,8 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client')
+const logger = require('../../logger');
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 router.post('', async (req, res) => {
@@ -30,6 +31,7 @@ router.post('', async (req, res) => {
     res.cookie('token', token, { httpOnly: true, expires: new Date(Number(new Date()) + 30 * 60 * 1000) });
     res.json({ message: 'Logged in successfully', token });
   } catch (err) {
+    logger.error(`An Error occured while logging for email ${email} with following error: ${err}`);
     res.status(500).json({ message: 'Error logging in' });
   }
 });

@@ -1,6 +1,7 @@
-const router = require('express').Router()
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const router = require('express').Router();
+const logger = require('../../logger');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 /**
  * @function GET /api/question/view
@@ -13,10 +14,11 @@ const prisma = new PrismaClient()
 
 router.get('', async (req, res) => {
     try {
-        const questions = await prisma.question.findMany()
-        return res.json(questions)
+        const questions = await prisma.question.findMany();
+        return res.json(questions);
     } catch (error) {
-        return res.status(500).json({ error: 'An error occurred while getting questions' })
+        logger.error(`An error occurred while getting questions with following error: ${error}`);
+        return res.status(500).json({ error: 'An error occurred while getting questions' });
     }
 });
 

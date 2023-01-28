@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const logger = require('../../logger');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -22,6 +23,7 @@ router.post('/create', async (req, res) => {
         });
         return res.json(form);
     } catch (error) {
+        logger.error(`An error occurred while creating form with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while creating form' });
     }
 });
@@ -43,6 +45,7 @@ router.get('/:id', async (req, res) => {
         const form = await prisma.form.findFirst({ where: { id: Number(id) } });
         return res.json(form);
     } catch (error) {
+        logger.error(`An error occurred while getting form by formId: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while getting form' });
     }
 });
@@ -68,6 +71,7 @@ router.patch('/edit/:id', async (req, res) => {
         })
         return res.json(form);
     } catch (error) {
+        logger.error(`An error occurred while updating form by formId: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while updating form' });
     }
 });
@@ -89,6 +93,7 @@ router.delete('/delete/:id', async (req, res) => {
         await prisma.form.delete({ where: { id: Number(id) } });
         return res.json({ message: 'Form deleted' });
     } catch (error) {
+        logger.error(`An error occurred while deleting form by formId: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while deleting form' });
     }
 });

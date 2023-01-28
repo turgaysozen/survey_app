@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const logger = require('../../logger');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -30,6 +31,7 @@ router.get('/all', async (req, res) => {
         });
         return res.json(surveys);
     } catch (error) {
+        logger.error(`An error occurred while getting surveys with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while getting surveys' });
     }
 });
@@ -60,6 +62,7 @@ router.get('/:id', async (req, res) => {
         })
         return res.json(form);
     } catch (error) {
+        logger.error(`An error occurred while getting survey for id: ${id} with following error: ${error}`);
         return res.status(500).json({ message: 'An error occurred while getting survey' });
     }
 });
@@ -79,6 +82,7 @@ router.delete('/delete/:id', async (req, res) => {
         await prisma.survey.delete({ where: { id: Number(id) } });
         return res.json({ message: 'Survey deleted' });
     } catch (error) {
+        logger.error(`An error occurred while deleting survey for id: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while deleting survey' });
     }
 })

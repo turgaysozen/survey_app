@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const logger = require('../../logger');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -29,6 +30,7 @@ router.post('/create', async (req, res) => {
         })
         return res.json(question);
     } catch (error) {
+        logger.error(`An error occurred while creating question with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while creating question' });
     }
 });
@@ -51,6 +53,7 @@ router.get('/:id', async (req, res) => {
         }
         return res.json(question);
     } catch (error) {
+        logger.error(`An error occurred while getting question for id: ${id} with following error: ${error}`);
         return res.status(500).json({ error: error.message });
     }
 });
@@ -85,6 +88,7 @@ router.patch('/edit/:id', async (req, res) => {
         });
         return res.json(question);
     } catch (error) {
+        logger.error(`An error occurred while updating question for id: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while updating question' });
     }
 });
@@ -104,6 +108,7 @@ router.delete('/delete/:id', async (req, res) => {
         await prisma.question.delete({ where: { id: Number(id) } });
         return res.json({ message: 'Question deleted' });
     } catch (error) {
+        logger.error(`An error occurred while deleting question for id: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while deleting question' });
     }
 });

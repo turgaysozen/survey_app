@@ -4,6 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const logger = require('./logger')
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -53,11 +54,11 @@ app.use('/api/survey', auth(['Admin']), surveyRoutes);
 
 if (require.main === module) {
   app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port: ${process.env.PORT}`);
+    logger.info(`Server is running on port: ${process.env.PORT}`);
     prisma
       .$connect()
       .then(() => {
-        console.log('Connected to database');
+        logger.info('Connected to database');
       })
       .catch(e => {
         throw e

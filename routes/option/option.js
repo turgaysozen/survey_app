@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const logger = require('../../logger');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -27,6 +28,7 @@ router.post('/create', async (req, res) => {
         })
         return res.json(option);
     } catch (error) {
+        logger.error(`An error occurred while creating option with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while creating option' });
     }
 });
@@ -46,6 +48,7 @@ router.get('/:id', async (req, res) => {
         const option = await prisma.option.findFirst({ where: { id: Number(id) } });
         return res.json(option);
     } catch (error) {
+        logger.error(`An error occurred while getting option for id: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while getting option' });
     }
 });
@@ -76,6 +79,7 @@ router.patch('/edit/:id', async (req, res) => {
         });
         return res.json(option);
     } catch (error) {
+        logger.error(`An error occurred while updating option for id: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while updating option' });
     }
 });
@@ -95,6 +99,7 @@ router.delete('/delete/:id', async (req, res) => {
         await prisma.option.delete({ where: { id: Number(id) } });
         return res.json({ message: 'Option deleted' });
     } catch (error) {
+        logger.error(`An error occurred while deleting option for id: ${id} with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while deleting option' });
     }
 });

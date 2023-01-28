@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const logger = require('../../logger');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -43,6 +44,7 @@ router.post('/:formId', async (req, res) => {
         })
         return res.json(`Survey successfully submitted`);
     } catch (error) {
+        logger.error(`An error occurred while submitting survey with following error: ${error}`);
         return res.status(500).json({ error: 'An error occurred while submitting survey' });
     }
 });
